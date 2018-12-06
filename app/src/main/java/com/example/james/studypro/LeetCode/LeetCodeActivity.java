@@ -6,8 +6,11 @@ import android.util.Log;
 
 import com.example.james.studypro.R;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Stack;
 
 public class LeetCodeActivity extends AppCompatActivity {
@@ -314,6 +317,54 @@ public class LeetCodeActivity extends AppCompatActivity {
     }
 
     public List<List<Integer>> levelOrderBottom(TreeNode root) {
-
+        List<List<Integer>> result = new ArrayList<>();
+        if (root == null) return result;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while (queue.size() != 0){
+            List<Integer> list = new ArrayList<>();
+            int size = queue.size();
+            for (int i = 0; i < size; i++){
+                TreeNode node = queue.poll();
+                list.add(node.val);
+                if (node.left != null){
+                    queue.add(node.left);
+                }
+                if (node.right != null){
+                    queue.add(node.right);
+                }
+            }
+            result.add(0,list);
+        }
+        return result;
     }
+
+    public TreeNode sortedArrayToBST(int[] nums) {
+        if (nums.length == 0) return null;
+        return helper(nums,0,nums.length - 1);
+    }
+
+    private TreeNode helper(int[] nums,int left,int right){
+        if (left > right) return null;
+        int mid = (right - left) /2 + left;
+        TreeNode node = new TreeNode(nums[mid]);
+        node.left = helper(nums,left,mid - 1);
+        node.right = helper(nums,mid + 1,right);
+        return node;
+    }
+
+    public boolean isBalanced(TreeNode root) {
+        if (root == null) return true;
+        return helper(root) != -1;
+    }
+
+    private int helper(TreeNode node){
+        if (node == null) return 0;
+        int leftDepth = helper(node.left);
+        int rightDepth = helper(node.right);
+        if (leftDepth == -1 || rightDepth == -1 || Math.abs(leftDepth - rightDepth) > 1)
+            return -1;
+        return Math.max(leftDepth,rightDepth) + 1;
+    }
+
 }
