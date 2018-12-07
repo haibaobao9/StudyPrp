@@ -287,32 +287,24 @@ public class LeetCodeActivity extends AppCompatActivity {
     }
 
     public boolean isSameTree(TreeNode p, TreeNode q) {
-        if (p == null && q == null) {
-            return true;
-        }
-        if (p == null || q == null || p.val != q.val) {
-            return false;
-        }
+        if (p == null && q == null) return true;
+        if (p == null || q ==null || p.val != q.val) return false;
         return isSameTree(p.left,q.left) && isSameTree(p.right,q.right);
     }
 
     public boolean isSymmetric(TreeNode root) {
-        return isMirror(root,root);
+        if (root == null) return true;
+        return helper(root.left,root.right);
     }
 
-    private boolean isMirror(TreeNode t1,TreeNode t2){
-        if (t1 == null && t2 == null){
-            return true;
-        }
-        if (t1 == null || t2 == null || t1.val != t2.val){
-            return false;
-        }
-        return isMirror(t1.left,t2.right) && isMirror(t1.right,t2.left);
+    private boolean helper(TreeNode p,TreeNode q){
+        if (p == null && q == null) return true;
+        if (p == null || q == null || q.val != p.val) return false;
+        return helper(p.left,q.right) && helper(p.right,q.left);
     }
 
     public int maxDepth(TreeNode root) {
         if (root == null) return 0;
-        if (root.left == null && root.right == null) return 1;
         return Math.max(maxDepth(root.left),maxDepth(root.right)) + 1;
     }
 
@@ -324,15 +316,11 @@ public class LeetCodeActivity extends AppCompatActivity {
         while (queue.size() != 0){
             List<Integer> list = new ArrayList<>();
             int size = queue.size();
-            for (int i = 0; i < size; i++){
+            for (int i = 0 ; i < size; i++){
                 TreeNode node = queue.poll();
                 list.add(node.val);
-                if (node.left != null){
-                    queue.add(node.left);
-                }
-                if (node.right != null){
-                    queue.add(node.right);
-                }
+                if (node.left != null) queue.add(node.left);
+                if (node.right != null) queue.add(node.right);
             }
             result.add(0,list);
         }
@@ -344,9 +332,9 @@ public class LeetCodeActivity extends AppCompatActivity {
         return helper(nums,0,nums.length - 1);
     }
 
-    private TreeNode helper(int[] nums,int left,int right){
+    private TreeNode helper(int nums[],int left,int right){
         if (left > right) return null;
-        int mid = (right - left) /2 + left;
+        int mid = (right - left) / 2 + left;
         TreeNode node = new TreeNode(nums[mid]);
         node.left = helper(nums,left,mid - 1);
         node.right = helper(nums,mid + 1,right);
@@ -354,17 +342,24 @@ public class LeetCodeActivity extends AppCompatActivity {
     }
 
     public boolean isBalanced(TreeNode root) {
-        if (root == null) return true;
         return helper(root) != -1;
     }
 
-    private int helper(TreeNode node){
-        if (node == null) return 0;
-        int leftDepth = helper(node.left);
-        int rightDepth = helper(node.right);
-        if (leftDepth == -1 || rightDepth == -1 || Math.abs(leftDepth - rightDepth) > 1)
+    private int helper(TreeNode p){
+        if (p == null) return 0;
+        if (p.left == null && p.right == null) return 1;
+        int leftHeight = helper(p.left);
+        int rightHeight = helper(p.right);
+        if (leftHeight == -1 || rightHeight == -1 || Math.abs(leftHeight - rightHeight) > 1){
             return -1;
-        return Math.max(leftDepth,rightDepth) + 1;
+        }
+        return Math.max(leftHeight,rightHeight) + 1;
     }
 
+    public int minDepth(TreeNode root) {
+        if (root == null) return 0;
+        int left = minDepth(root.left);
+        int right = minDepth(root.right);
+        return (left == 0 || right == 0) ? left + right + 1 : Math.min(left,right) + 1;
+    }
 }
