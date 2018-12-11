@@ -328,13 +328,12 @@ public class LeetCodeActivity extends AppCompatActivity {
     }
 
     public TreeNode sortedArrayToBST(int[] nums) {
-        if (nums.length == 0) return null;
         return helper(nums,0,nums.length - 1);
     }
 
-    private TreeNode helper(int nums[],int left,int right){
+    private TreeNode helper(int[] nums,int left,int right){
         if (left > right) return null;
-        int mid = (right - left) / 2 + left;
+        int mid = (right - left) /2 + left;
         TreeNode node = new TreeNode(nums[mid]);
         node.left = helper(nums,left,mid - 1);
         node.right = helper(nums,mid + 1,right);
@@ -345,21 +344,20 @@ public class LeetCodeActivity extends AppCompatActivity {
         return helper(root) != -1;
     }
 
-    private int helper(TreeNode p){
-        if (p == null) return 0;
-        if (p.left == null && p.right == null) return 1;
-        int leftHeight = helper(p.left);
-        int rightHeight = helper(p.right);
-        if (leftHeight == -1 || rightHeight == -1 || Math.abs(leftHeight - rightHeight) > 1){
+    private int helper(TreeNode node){
+        if (node == null) return 0;
+        if (node.left == null && node.right == null) return 1;
+        int lh = helper(node.left);
+        int rh = helper(node.right);
+        if (lh == - 1 || rh == -1 || (Math.abs(lh - rh) > 1))
             return -1;
-        }
-        return Math.max(leftHeight,rightHeight) + 1;
+        return Math.max(lh,rh) + 1;
     }
 
     public int minDepth(TreeNode root) {
         if (root == null) return 0;
-        int left = minDepth(root.left);
-        int right = minDepth(root.right);
-        return (left == 0 || right == 0) ? left + right + 1 : Math.min(left,right) + 1;
+        int lh = minDepth(root.left);
+        int rh = minDepth(root.right);
+        return (rh == 0 || lh == 0) ? rh + lh + 1 : Math.min(rh,lh) + 1;
     }
 }
