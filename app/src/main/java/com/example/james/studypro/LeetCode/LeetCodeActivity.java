@@ -288,24 +288,24 @@ public class LeetCodeActivity extends AppCompatActivity {
 
     public boolean isSameTree(TreeNode p, TreeNode q) {
         if (p == null && q == null) return true;
-        if (p == null || q ==null || p.val != q.val) return false;
-        return isSameTree(p.left,q.left) && isSameTree(p.right,q.right);
+        if (p == null || q == null || p.val != q.val) return false;
+        return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
     }
 
     public boolean isSymmetric(TreeNode root) {
         if (root == null) return true;
-        return helper(root.left,root.right);
+        return helper(root.left, root.right);
     }
 
-    private boolean helper(TreeNode p,TreeNode q){
+    private boolean helper(TreeNode p, TreeNode q) {
         if (p == null && q == null) return true;
         if (p == null || q == null || q.val != p.val) return false;
-        return helper(p.left,q.right) && helper(p.right,q.left);
+        return helper(p.left, q.right) && helper(p.right, q.left);
     }
 
     public int maxDepth(TreeNode root) {
         if (root == null) return 0;
-        return Math.max(maxDepth(root.left),maxDepth(root.right)) + 1;
+        return Math.max(maxDepth(root.left), maxDepth(root.right)) + 1;
     }
 
     public List<List<Integer>> levelOrderBottom(TreeNode root) {
@@ -313,30 +313,30 @@ public class LeetCodeActivity extends AppCompatActivity {
         if (root == null) return result;
         Queue<TreeNode> queue = new LinkedList<>();
         queue.add(root);
-        while (queue.size() != 0){
+        while (queue.size() != 0) {
             List<Integer> list = new ArrayList<>();
             int size = queue.size();
-            for (int i = 0 ; i < size; i++){
+            for (int i = 0; i < size; i++) {
                 TreeNode node = queue.poll();
                 list.add(node.val);
                 if (node.left != null) queue.add(node.left);
                 if (node.right != null) queue.add(node.right);
             }
-            result.add(0,list);
+            result.add(0, list);
         }
         return result;
     }
 
     public TreeNode sortedArrayToBST(int[] nums) {
-        return helper(nums,0,nums.length - 1);
+        return helper(nums, 0, nums.length - 1);
     }
 
-    private TreeNode helper(int[] nums,int left,int right){
+    private TreeNode helper(int[] nums, int left, int right) {
         if (left > right) return null;
-        int mid = (right - left) /2 + left;
+        int mid = (right - left) / 2 + left;
         TreeNode node = new TreeNode(nums[mid]);
-        node.left = helper(nums,left,mid - 1);
-        node.right = helper(nums,mid + 1,right);
+        node.left = helper(nums, left, mid - 1);
+        node.right = helper(nums, mid + 1, right);
         return node;
     }
 
@@ -344,31 +344,68 @@ public class LeetCodeActivity extends AppCompatActivity {
         return helper(root) != -1;
     }
 
-    private int helper(TreeNode node){
+    private int helper(TreeNode node) {
         if (node == null) return 0;
         if (node.left == null && node.right == null) return 1;
         int lh = helper(node.left);
         int rh = helper(node.right);
-        if (lh == - 1 || rh == -1 || (Math.abs(lh - rh) > 1))
+        if (lh == -1 || rh == -1 || (Math.abs(lh - rh) > 1))
             return -1;
-        return Math.max(lh,rh) + 1;
+        return Math.max(lh, rh) + 1;
     }
 
     public int minDepth(TreeNode root) {
         if (root == null) return 0;
         int lh = minDepth(root.left);
         int rh = minDepth(root.right);
-        return (rh == 0 || lh == 0) ? rh + lh + 1 : Math.min(rh,lh) + 1;
+        return (lh == 0 || rh == 0) ? rh + lh + 1 : Math.min(rh, lh) + 1;
     }
 
     public boolean hasPathSum(TreeNode root, int sum) {
         if (root == null) return false;
-        if (root.left == null && root.right == null){
-            if (root.val == sum)
-                return true;
-            else
-                return false;
+        if (root.left == null && root.right == null && sum == root.val) {
+            return true;
         }
-        return hasPathSum(root.left,sum - root.val) || hasPathSum(root.right,sum - root.val);
+        return hasPathSum(root.left, sum - root.val) || hasPathSum(root.right, sum - root.val);
+    }
+
+    public List<List<Integer>> generate(int numRows) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (numRows <= 0) return result;
+        List<Integer> fst = new ArrayList<>();
+        fst.add(1);
+        result.add(fst);
+        for (int i = 1; i < numRows; i++) {
+            List<Integer> list = new ArrayList<>();
+            list.add(1);
+            List<Integer> former = result.get(i - 1);
+            for (int j = 1; j < i; j++) {
+                list.add(former.get(j - 1) + former.get(j));
+            }
+            list.add(1);
+            result.add(list);
+        }
+        return result;
+    }
+
+
+    public List<Integer> getRow(int rowIndex) {
+        List<Integer> result = new ArrayList<>();
+        for (int i = 0; i < rowIndex + 1; i++){
+            result.add(1);
+            for (int j = i - 1; j > 0; j--){
+                result.set(j,result.get(j) + result.get(j - 1));
+            }
+        }
+        return result;
+    }
+
+    public int maxProfit(int[] prices) {
+        int maxCur = 0, maxSoFar = 0;
+        for(int i = 1; i < prices.length; i++) {
+            maxCur = Math.max(0, maxCur += prices[i] - prices[i-1]);
+            maxSoFar = Math.max(maxCur, maxSoFar);
+        }
+        return maxSoFar;
     }
 }
