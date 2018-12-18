@@ -375,11 +375,11 @@ public class LeetCodeActivity extends AppCompatActivity {
         List<Integer> fst = new ArrayList<>();
         fst.add(1);
         result.add(fst);
-        for (int i = 1; i < numRows; i++) {
+        for (int i = 1; i < numRows; i++){
             List<Integer> list = new ArrayList<>();
             list.add(1);
             List<Integer> former = result.get(i - 1);
-            for (int j = 1; j < i; j++) {
+            for (int j = 1; j < i; j++){
                 list.add(former.get(j - 1) + former.get(j));
             }
             list.add(1);
@@ -388,10 +388,10 @@ public class LeetCodeActivity extends AppCompatActivity {
         return result;
     }
 
-
     public List<Integer> getRow(int rowIndex) {
         List<Integer> result = new ArrayList<>();
-        for (int i = 0; i < rowIndex + 1; i++){
+        if (rowIndex < 0) return result;
+        for (int i = 0; i < rowIndex + 1; i ++){
             result.add(1);
             for (int j = i - 1; j > 0; j--){
                 result.set(j,result.get(j) + result.get(j - 1));
@@ -401,11 +401,72 @@ public class LeetCodeActivity extends AppCompatActivity {
     }
 
     public int maxProfit(int[] prices) {
-        int maxCur = 0, maxSoFar = 0;
-        for(int i = 1; i < prices.length; i++) {
-            maxCur = Math.max(0, maxCur += prices[i] - prices[i-1]);
-            maxSoFar = Math.max(maxCur, maxSoFar);
+        int temp = 0,max = 0;
+        for (int i = 1; i < prices.length; i++){
+            temp += prices[i] - prices[i - 1];
+            max = Math.max(temp,max);
+            temp = Math.max(temp,0);
         }
-        return maxSoFar;
+        return max;
+    }
+
+    public int maxProfit2(int[] prices){
+        int max = 0;
+        for(int i = 1; i < prices.length; i++){
+            max += Math.max(0,prices[i] - prices[i - 1]);
+        }
+        return max;
+    }
+
+    public int singleNumber(int[] nums) {
+        for (int i = 1; i < nums.length; i++){
+            nums[0] ^= nums[i];
+        }
+        return nums[0];
+    }
+
+    public boolean hasCycle(ListNode head) {
+        if (head == null) return false;
+        ListNode slow = head,fast = head;
+        while (fast != null && fast.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    class MinStack {
+        Stack<Integer> stack;
+        int min;
+        /** initialize your data structure here. */
+        public MinStack() {
+            stack = new Stack<>();
+            min = Integer.MAX_VALUE;
+        }
+
+        public void push(int x) {
+            if (x <= min){
+                stack.push(min);
+                min = x;
+            }
+            stack.push(x);
+        }
+
+        public void pop() {
+            if (stack.pop() == min){
+                 min = stack.pop();
+            }
+        }
+
+        public int top() {
+            return stack.peek();
+        }
+
+        public int getMin() {
+            return min;
+        }
     }
 }
