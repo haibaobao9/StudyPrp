@@ -375,7 +375,7 @@ public class LeetCodeActivity extends AppCompatActivity {
         List<Integer> fst = new ArrayList<>();
         fst.add(1);
         result.add(fst);
-        for (int i = 1; i < numRows; i++){
+        for (int i = 1; i < numRows; i ++){
             List<Integer> list = new ArrayList<>();
             list.add(1);
             List<Integer> former = result.get(i - 1);
@@ -391,10 +391,10 @@ public class LeetCodeActivity extends AppCompatActivity {
     public List<Integer> getRow(int rowIndex) {
         List<Integer> result = new ArrayList<>();
         if (rowIndex < 0) return result;
-        for (int i = 0; i < rowIndex + 1; i ++){
+        for (int i = 0; i < rowIndex + 1; i++){
             result.add(1);
             for (int j = i - 1; j > 0; j--){
-                result.set(j,result.get(j) + result.get(j - 1));
+                result.set(j,result.get(j - 1) + result.get(j));
             }
         }
         return result;
@@ -402,7 +402,7 @@ public class LeetCodeActivity extends AppCompatActivity {
 
     public int maxProfit(int[] prices) {
         int temp = 0,max = 0;
-        for (int i = 1; i < prices.length; i++){
+        for(int i = 1; i < prices.length; i++){
             temp += prices[i] - prices[i - 1];
             max = Math.max(temp,max);
             temp = Math.max(temp,0);
@@ -410,10 +410,10 @@ public class LeetCodeActivity extends AppCompatActivity {
         return max;
     }
 
-    public int maxProfit2(int[] prices){
+    public int maxProfit2(int[] prices) {
         int max = 0;
-        for(int i = 1; i < prices.length; i++){
-            max += Math.max(0,prices[i] - prices[i - 1]);
+        for (int i = 1;i < prices.length; i++){
+            max += Math.max(prices[i] - prices[i - 1], 0);
         }
         return max;
     }
@@ -431,16 +431,15 @@ public class LeetCodeActivity extends AppCompatActivity {
         while (fast != null && fast.next != null){
             slow = slow.next;
             fast = fast.next.next;
-            if (slow == fast){
+            if (slow == fast)
                 return true;
-            }
         }
         return false;
     }
 
     class MinStack {
-        Stack<Integer> stack;
-        int min;
+        private Stack<Integer> stack;
+        private int min;
         /** initialize your data structure here. */
         public MinStack() {
             stack = new Stack<>();
@@ -457,7 +456,7 @@ public class LeetCodeActivity extends AppCompatActivity {
 
         public void pop() {
             if (stack.pop() == min){
-                 min = stack.pop();
+                min = stack.pop();
             }
         }
 
@@ -468,5 +467,37 @@ public class LeetCodeActivity extends AppCompatActivity {
         public int getMin() {
             return min;
         }
+    }
+
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if (headA == null || headB == null) return null;
+        ListNode a = headA,b = headB;
+        while (a != b){
+            a = a == null ? headB : a.next;
+            b = b == null ? headA : b.next;
+        }
+        return a;
+    }
+
+    public int[] twoSum2(int[] numbers, int target) {
+        int l = 0, r = numbers.length - 1;
+        while (numbers[l] + numbers[r] != target){
+            if (numbers[l] + numbers[r] > target){
+                r--;
+            }else {
+                l++;
+            }
+        }
+        return new int[]{l+1,r+1};
+    }
+
+    public String convertToTitle(int n) {
+        StringBuilder builder = new StringBuilder();
+        while (--n >= 0){
+            int count = n % 26;
+            builder.insert(0,(char) ('A' + count));
+            n /= 26;
+        }
+        return builder.toString();
     }
 }
