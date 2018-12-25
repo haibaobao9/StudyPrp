@@ -20,12 +20,7 @@ public class LeetCodeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leet_code);
 
-        int[] a = new int[]{1, 3, 5, 6};
-        Log.d("xxy", searchInsert(a, 5) + "");
-        Log.d("xxy", searchInsert(a, 2) + "");
-        Log.d("xxy", searchInsert(a, 7) + "");
-        Log.d("xxy", searchInsert(a, 0) + "");
-        Log.d("xxy", searchInsert(new int[]{1, 3}, 0) + "");
+        Log.d("xxy", " " + isHappy(11));
     }
 
     public int[] twoSum(int[] nums, int target) {
@@ -471,24 +466,24 @@ public class LeetCodeActivity extends AppCompatActivity {
 
     public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
         if (headA == null || headB == null) return null;
-        ListNode a = headA,b = headB;
-        while (a != b){
-            a = a == null ? headB : a.next;
-            b = b == null ? headA : b.next;
+        ListNode p = headA,q = headB;
+        while (p != q){
+            p = p == null ? headB : p.next;
+            q = q == null ? headA : q.next;
         }
-        return a;
+        return p;
     }
 
     public int[] twoSum2(int[] numbers, int target) {
-        int l = 0, r = numbers.length - 1;
-        while (numbers[l] + numbers[r] != target){
-            if (numbers[l] + numbers[r] > target){
-                r--;
+        int left = 0, right = numbers.length - 1;
+        while (numbers[left] + numbers[right] != target){
+            if (numbers[left] + numbers[right] > target){
+                right --;
             }else {
-                l++;
+                left ++;
             }
         }
-        return new int[]{l+1,r+1};
+        return new int[]{left + 1,right + 1};
     }
 
     public String convertToTitle(int n) {
@@ -499,5 +494,110 @@ public class LeetCodeActivity extends AppCompatActivity {
             n /= 26;
         }
         return builder.toString();
+    }
+
+    public int majorityElement(int[] nums) {
+        int marjor = nums[0],count = 1;
+        for (int i = 1; i < nums.length; i++){
+            if (count == 0){
+                marjor = nums[i];
+            }
+            if (marjor == nums[i]){
+                count++;
+            }else {
+                count--;
+            }
+        }
+        return marjor;
+    }
+
+    public int titleToNumber(String s) {
+        int result = 0;
+        for (int i = s.length() - 1; i >= 0; i--){
+            char c = s.charAt(i);
+            result += (c - 'A' + 1) * (Math.pow(26,s.length() - 1 - i));
+        }
+        return result;
+    }
+
+    public int trailingZeroes(int n) {
+        return n < 5 ? 0 : (n / 5 + trailingZeroes(n / 5));
+    }
+
+    public void rotate(int[] nums, int k) {
+        k %= nums.length;
+        reserve(nums,0,nums.length - 1);
+        reserve(nums,0,k - 1);
+        reserve(nums,k,nums.length - 1);
+    }
+
+    private void reserve(int[] nums,int start,int end){
+        while (start < end){
+            int temp = nums[start];
+            nums[start] = nums[end];
+            nums[end] = temp;
+            start ++;
+            end --;
+        }
+    }
+
+    // you need treat n as an unsigned value
+    public int reverseBits(int n) {
+        int result = 0;
+        for (int i = 0; i < 32; i++){
+            result += n & 1;
+            n >>>= 1;
+            if (i < 31){
+                result <<= 1;
+            }
+        }
+        return result;
+    }
+
+    // you need to treat n as an unsigned value
+    public int hammingWeight(int n) {
+        int result = 0;
+        for (int i = 0; i < 32; i++){
+            result += (n & 1);
+            n >>>= 1;
+        }
+        return result;
+    }
+
+    public int rob(int[] nums) {
+        int rob = 0, notRob = 0;
+        for (int n : nums){
+            int temp = notRob;
+            notRob = Math.max(temp,rob);
+            rob = temp + n;
+        }
+        return Math.max(notRob,rob);
+    }
+
+    public boolean isHappy(int n) {
+       int slow = n,fast = n;
+       while (slow != 1){
+           slow = cycle(slow);
+           if (slow == 1) return true;
+           fast = cycle(cycle(fast));
+           if (fast == 1) return true;
+           if (fast == slow) return false;
+       }
+       return true;
+    }
+
+    public int cycle(int n){
+        int result = 0;
+        while (n != 0){
+            result += (n % 10) * (n % 10);
+            n /= 10;
+        }
+        return result;
+    }
+
+    public ListNode removeElements(ListNode head, int val) {
+        if (head == null) return null;
+        head.next = removeElements(head.next,val);
+        return head.val == val ? head.next : head;
     }
 }
