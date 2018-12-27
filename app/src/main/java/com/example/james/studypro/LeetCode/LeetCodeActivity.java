@@ -498,14 +498,14 @@ public class LeetCodeActivity extends AppCompatActivity {
 
     public int majorityElement(int[] nums) {
         int marjor = nums[0],count = 1;
-        for (int i = 1; i < nums.length; i++){
+        for (int i = 1; i < nums.length; i ++){
             if (count == 0){
                 marjor = nums[i];
             }
             if (marjor == nums[i]){
-                count++;
+                count ++;
             }else {
-                count--;
+                count --;
             }
         }
         return marjor;
@@ -514,14 +514,13 @@ public class LeetCodeActivity extends AppCompatActivity {
     public int titleToNumber(String s) {
         int result = 0;
         for (int i = s.length() - 1; i >= 0; i--){
-            char c = s.charAt(i);
-            result += (c - 'A' + 1) * (Math.pow(26,s.length() - 1 - i));
+            result += (s.charAt(i) - 'A' + 1) * Math.pow(26,s.length() - 1 - i);
         }
         return result;
     }
 
     public int trailingZeroes(int n) {
-        return n < 5 ? 0 : (n / 5 + trailingZeroes(n / 5));
+        return n < 5 ? 0 : (n / 5) + trailingZeroes(n / 5);
     }
 
     public void rotate(int[] nums, int k) {
@@ -531,7 +530,7 @@ public class LeetCodeActivity extends AppCompatActivity {
         reserve(nums,k,nums.length - 1);
     }
 
-    private void reserve(int[] nums,int start,int end){
+    private void reserve(int[] nums, int start, int end){
         while (start < end){
             int temp = nums[start];
             nums[start] = nums[end];
@@ -545,7 +544,7 @@ public class LeetCodeActivity extends AppCompatActivity {
     public int reverseBits(int n) {
         int result = 0;
         for (int i = 0; i < 32; i++){
-            result += n & 1;
+            result += (n & 1);
             n >>>= 1;
             if (i < 31){
                 result <<= 1;
@@ -554,18 +553,19 @@ public class LeetCodeActivity extends AppCompatActivity {
         return result;
     }
 
-    // you need to treat n as an unsigned value
     public int hammingWeight(int n) {
-        int result = 0;
+        int count = 0;
         for (int i = 0; i < 32; i++){
-            result += (n & 1);
+            if ((n & 1) == 1){
+                count ++;
+            }
             n >>>= 1;
         }
-        return result;
+        return count;
     }
 
     public int rob(int[] nums) {
-        int rob = 0, notRob = 0;
+        int rob = 0,notRob = 0;
         for (int n : nums){
             int temp = notRob;
             notRob = Math.max(temp,rob);
@@ -575,29 +575,24 @@ public class LeetCodeActivity extends AppCompatActivity {
     }
 
     public boolean isHappy(int n) {
-       int slow = n,fast = n;
-       while (slow != 1){
-           slow = cycle(slow);
-           if (slow == 1) return true;
-           fast = cycle(cycle(fast));
-           if (fast == 1) return true;
-           if (fast == slow) return false;
-       }
-       return true;
+        int slow = n;
+        int fast = n;
+        while (slow != 1){
+            slow = cycle(slow);
+            if (slow == 1) return true;
+            fast = cycle(cycle(fast));
+            if (fast == 1) return true;
+            if (fast == slow) return false;
+        }
+        return true;
     }
 
-    public int cycle(int n){
+    private int cycle(int n){
         int result = 0;
         while (n != 0){
-            result += (n % 10) * (n % 10);
+            result += Math.pow(n % 10,2);
             n /= 10;
         }
         return result;
-    }
-
-    public ListNode removeElements(ListNode head, int val) {
-        if (head == null) return null;
-        head.next = removeElements(head.next,val);
-        return head.val == val ? head.next : head;
     }
 }
