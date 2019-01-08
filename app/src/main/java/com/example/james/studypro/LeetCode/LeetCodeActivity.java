@@ -8,9 +8,11 @@ import com.example.james.studypro.R;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 import java.util.Stack;
 
 public class LeetCodeActivity extends AppCompatActivity {
@@ -19,8 +21,8 @@ public class LeetCodeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leet_code);
-
-        Log.d("xxy", " " + isHappy(11));
+        int[] nums = {1,2,3,1,2,3};
+        containsNearbyDuplicate(nums,2);
     }
 
     public int[] twoSum(int[] nums, int target) {
@@ -575,9 +577,8 @@ public class LeetCodeActivity extends AppCompatActivity {
     }
 
     public boolean isHappy(int n) {
-        int slow = n;
-        int fast = n;
-        while (slow != 1){
+        int fast = n,slow = n;
+        while (fast != 1){
             slow = cycle(slow);
             if (slow == 1) return true;
             fast = cycle(cycle(fast));
@@ -590,9 +591,72 @@ public class LeetCodeActivity extends AppCompatActivity {
     private int cycle(int n){
         int result = 0;
         while (n != 0){
-            result += Math.pow(n % 10,2);
+            result += Math.pow(n % 10, 2);
             n /= 10;
         }
         return result;
+    }
+
+    public ListNode removeElements(ListNode head, int val) {
+        if (head == null) return null;
+        head.next = removeElements(head.next,val);
+        return head.val == val ? head.next : head;
+    }
+
+    public int countPrimes(int n) {
+        int result = 0;
+        boolean[] nums = new boolean[n];
+        for (int i = 2; i < n; i++){
+            if (!nums[i]){
+                result ++;
+            }
+            for (int j = 2; i * j < n; j ++){
+                nums[i * j] = true;
+            }
+        }
+        return result;
+    }
+
+    public boolean isIsomorphic(String s, String t) {
+        int[] a1 = new int[256],a2 = new int[256];
+        for (int i = 0; i < s.length(); i++){
+            if (a1[s.charAt(i)] != a2[t.charAt(i)]){
+                return false;
+            }
+            a1[s.charAt(i)] = a2[t.charAt(i)] = i+1;
+        }
+        return true;
+    }
+
+    public ListNode reverseList(ListNode head) {
+        ListNode preNode = null,curNode = head;
+        while (curNode != null){
+            ListNode temp = curNode.next;
+            curNode.next = preNode;
+            preNode = curNode;
+            curNode = temp;
+        }
+        return preNode;
+    }
+
+    public boolean containsDuplicate(int[] nums) {
+        Set<Integer> set = new HashSet<>();
+        for (int i = 0; i < nums.length; i++){
+            if (!set.add(nums[i])){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
+        Set<Integer> set = new HashSet<>();
+        for (int i = 0; i < nums.length; i++){
+            if (i > k) set.remove(nums[i - k -1]);
+            if (!set.add(nums[i])){
+                return true;
+            }
+        }
+        return false;
     }
 }
