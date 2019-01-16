@@ -604,26 +604,26 @@ public class LeetCodeActivity extends AppCompatActivity {
     }
 
     public int countPrimes(int n) {
-        int result = 0;
-        boolean[] nums = new boolean[n];
+        int count = 0;
+        boolean nums[] = new boolean[n];
         for (int i = 2; i < n; i++){
             if (!nums[i]){
-                result ++;
+                count ++;
             }
-            for (int j = 2; i * j < n; j ++){
-                nums[i * j] = true;
+            for (int j = 2; i * j < n; j++){
+                nums[i * j ] = true;
             }
         }
-        return result;
+        return count;
     }
 
     public boolean isIsomorphic(String s, String t) {
-        int[] a1 = new int[256],a2 = new int[256];
+        int[] a = new int[256];
         for (int i = 0; i < s.length(); i++){
-            if (a1[s.charAt(i)] != a2[t.charAt(i)]){
+            if (a[s.charAt(i)] != a[t.charAt(i) + 128]){
                 return false;
             }
-            a1[s.charAt(i)] = a2[t.charAt(i)] = i+1;
+            a[s.charAt(i)] = a[t.charAt(i) + 128] = i + 1;
         }
         return true;
     }
@@ -631,10 +631,10 @@ public class LeetCodeActivity extends AppCompatActivity {
     public ListNode reverseList(ListNode head) {
         ListNode preNode = null,curNode = head;
         while (curNode != null){
-            ListNode temp = curNode.next;
+            ListNode tempNode = curNode.next;
             curNode.next = preNode;
             preNode = curNode;
-            curNode = temp;
+            curNode = tempNode;
         }
         return preNode;
     }
@@ -652,11 +652,56 @@ public class LeetCodeActivity extends AppCompatActivity {
     public boolean containsNearbyDuplicate(int[] nums, int k) {
         Set<Integer> set = new HashSet<>();
         for (int i = 0; i < nums.length; i++){
-            if (i > k) set.remove(nums[i - k -1]);
+            if (i > k){
+                set.remove(nums[i - k - 1]);
+            }
             if (!set.add(nums[i])){
                 return true;
             }
         }
         return false;
     }
+
+    class MyStack {
+        Queue<Integer> queue;
+        /** Initialize your data structure here. */
+        public MyStack() {
+            queue = new LinkedList<>();
+        }
+
+        /** Push element x onto stack. */
+        public void push(int x) {
+            queue.add(x);
+            for (int i = 0; i < queue.size() - 1; i++){
+                queue.add(queue.poll());
+            }
+        }
+
+        /** Removes the element on top of the stack and returns that element. */
+        public int pop() {
+            return queue.poll();
+        }
+
+        /** Get the top element. */
+        public int top() {
+            return queue.peek();
+        }
+
+        /** Returns whether the stack is empty. */
+        public boolean empty() {
+            return queue.isEmpty();
+        }
+    }
+
+    public TreeNode invertTree(TreeNode root) {
+        if (root == null){
+            return null;
+        }
+
+        TreeNode temp = root.left;
+        root.left = invertTree(root.right);
+        root.right = invertTree(temp);
+        return root;
+    }
+
 }
