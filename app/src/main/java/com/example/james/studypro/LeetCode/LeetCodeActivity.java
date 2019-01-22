@@ -767,15 +767,9 @@ public class LeetCodeActivity extends AppCompatActivity {
 
     //BST : left.value < root.value <= right.value
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
-        int val = root.val;
-        int pVal = p.val;
-        int qVal = q.val;
-        if (p.val > root.val && q.val > root.val){
-            return lowestCommonAncestor(root.right,p,q);
-        }else if (p.val < root.val && q.val < root.val){
-            return lowestCommonAncestor(root.left,p,q);
-        }else {
-            return root;
+        while ((p.val - root.val) * (q.val - root.val) > 0){
+            root = (p.val - root.val) > 0 ? root.right : root.left;
         }
+        return root;
     }
 }
