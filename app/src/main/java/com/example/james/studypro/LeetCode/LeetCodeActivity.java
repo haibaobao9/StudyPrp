@@ -672,7 +672,7 @@ public class LeetCodeActivity extends AppCompatActivity {
         /** Push element x onto stack. */
         public void push(int x) {
             queue.add(x);
-            for (int i = 0; i < queue.size() - 1; i++){
+            for (int i = 0 ; i < queue.size() - 1; i++){
                 queue.add(queue.poll());
             }
         }
@@ -694,14 +694,88 @@ public class LeetCodeActivity extends AppCompatActivity {
     }
 
     public TreeNode invertTree(TreeNode root) {
-        if (root == null){
-            return null;
-        }
-
+        if (root == null) return null;
         TreeNode temp = root.left;
         root.left = invertTree(root.right);
         root.right = invertTree(temp);
         return root;
     }
 
+    public boolean isPowerOfTwo(int n) {
+        return n > 0 && (n & (n - 1)) == 0;
+    }
+
+    class MyQueue {
+        private Stack<Integer> s1;
+        private Stack<Integer> s2;
+        private int front;
+        /** Initialize your data structure here. */
+        public MyQueue() {
+            s1 = new Stack<>();
+            s2 = new Stack<>();
+        }
+
+        /** Push element x to the back of queue. */
+        public void push(int x) {
+            if (s1.isEmpty()) {
+                front = x;
+            }
+            s1.push(x);
+        }
+
+        /** Removes the element from in front of queue and returns that element. */
+        public int pop() {
+            if (s2.isEmpty()){
+                while (!s1.isEmpty()){
+                    s2.push(s1.pop());
+                }
+            }
+            return s2.pop();
+        }
+
+        /** Get the front element. */
+        public int peek() {
+            if (!s2.isEmpty()){
+                return s2.peek();
+            }
+            return front;
+        }
+
+        /** Returns whether the queue is empty. */
+        public boolean empty() {
+            return s1.isEmpty() && s2.isEmpty();
+        }
+    }
+
+    public boolean isPalindrome(ListNode head) {
+        ListNode slow = head,fast = head;
+        while (fast != null && fast.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        slow = reverseList(slow);
+        fast = head;
+        while (slow != null){
+            if (fast.val != slow.val){
+                return false;
+            }
+            slow = slow.next;
+            fast = fast.next;
+        }
+        return true;
+    }
+
+    //BST : left.value < root.value <= right.value
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        int val = root.val;
+        int pVal = p.val;
+        int qVal = q.val;
+        if (p.val > root.val && q.val > root.val){
+            return lowestCommonAncestor(root.right,p,q);
+        }else if (p.val < root.val && q.val < root.val){
+            return lowestCommonAncestor(root.left,p,q);
+        }else {
+            return root;
+        }
+    }
 }
