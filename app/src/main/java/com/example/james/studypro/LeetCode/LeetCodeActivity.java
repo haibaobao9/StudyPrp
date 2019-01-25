@@ -663,7 +663,7 @@ public class LeetCodeActivity extends AppCompatActivity {
     }
 
     class MyStack {
-        Queue<Integer> queue;
+        private Queue<Integer> queue;
         /** Initialize your data structure here. */
         public MyStack() {
             queue = new LinkedList<>();
@@ -706,9 +706,9 @@ public class LeetCodeActivity extends AppCompatActivity {
     }
 
     class MyQueue {
-        private Stack<Integer> s1;
-        private Stack<Integer> s2;
-        private int front;
+        Stack<Integer> s1;
+        Stack<Integer> s2;
+        int front;
         /** Initialize your data structure here. */
         public MyQueue() {
             s1 = new Stack<>();
@@ -717,7 +717,7 @@ public class LeetCodeActivity extends AppCompatActivity {
 
         /** Push element x to the back of queue. */
         public void push(int x) {
-            if (s1.isEmpty()) {
+            if (s1.isEmpty()){
                 front = x;
             }
             s1.push(x);
@@ -735,23 +735,23 @@ public class LeetCodeActivity extends AppCompatActivity {
 
         /** Get the front element. */
         public int peek() {
-            if (!s2.isEmpty()){
-                return s2.peek();
+            if (s2.isEmpty()){
+                return front;
             }
-            return front;
+            return s2.peek();
         }
 
         /** Returns whether the queue is empty. */
         public boolean empty() {
-            return s1.isEmpty() && s2.isEmpty();
+            return s2.isEmpty() && s1.isEmpty();
         }
     }
 
     public boolean isPalindrome(ListNode head) {
-        ListNode slow = head,fast = head;
+        ListNode fast = head,slow = head;
         while (fast != null && fast.next != null){
-            slow = slow.next;
             fast = fast.next.next;
+            slow = slow.next;
         }
         slow = reverseList(slow);
         fast = head;
@@ -759,17 +759,28 @@ public class LeetCodeActivity extends AppCompatActivity {
             if (fast.val != slow.val){
                 return false;
             }
-            slow = slow.next;
             fast = fast.next;
+            slow = slow.next;
         }
         return true;
     }
 
-    //BST : left.value < root.value <= right.value
+    /**
+     * BST : root.left.val < root.val <= root.right.val
+     * @param root
+     * @param p
+     * @param q
+     * @return
+     */
     public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
         while ((p.val - root.val) * (q.val - root.val) > 0){
-            root = (p.val - root.val) > 0 ? root.right : root.left;
+            root = p.val > root.val ? root.right : root.left;
         }
         return root;
+    }
+
+    public void deleteNode(ListNode node) {
+        node.val = node.next.val;
+        node.next = node.next.next;
     }
 }
