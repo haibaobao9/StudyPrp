@@ -1,4 +1,4 @@
-package com.example.james.studypro.activity;
+package com.example.james.studypro.LeetCode;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
