@@ -1,4 +1,4 @@
-package com.example.james.studypro.View;
+package com.example.james.studypro.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
