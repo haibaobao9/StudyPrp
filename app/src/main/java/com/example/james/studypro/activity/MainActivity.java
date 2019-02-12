@@ -9,7 +9,9 @@ import android.widget.Button;
 import com.example.james.studypro.R;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-    private Button btn_leet_code,btn_view;
+    private Button btn_leet_code;
+    private Button btn_view;
+    private Button btn_event_bus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +26,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn_leet_code.setOnClickListener(this);
         btn_view = findViewById(R.id.btn_view);
         btn_view.setOnClickListener(this);
+        btn_event_bus = findViewById(R.id.btn_event_bus);
+        btn_event_bus.setOnClickListener(this);
     }
 
     @Override
@@ -38,8 +42,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent = new Intent(MainActivity.this,ViewActivity.class);
                 startActivity(intent);
                 break;
-                default:
-                    break;
+            case R.id.btn_event_bus:
+                intent = new Intent(MainActivity.this, EventBusActivity.class);
+                startActivity(intent);
+                break;
+            default:
+                break;
         }
     }
 }
