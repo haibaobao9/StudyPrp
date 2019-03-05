@@ -6,7 +6,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.james.studypro.ProducerConsumer.ConsumeThread;
+import com.example.james.studypro.ProducerConsumer.ProduceThread;
+import com.example.james.studypro.ProducerConsumer.PublicRes;
 import com.example.james.studypro.R;
+
+import java.util.concurrent.locks.ReentrantLock;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private Button btn_leet_code;
@@ -17,8 +22,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         init();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+        ReentrantLock lock = new ReentrantLock();
+        PublicRes publicRes = new PublicRes(lock);
+        new Thread(new ProduceThread(publicRes)).start();
+        new Thread(new ConsumeThread(publicRes)).start();
     }
 
     private void init(){
