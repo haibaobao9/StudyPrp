@@ -11,6 +11,11 @@ import com.example.james.studypro.ProducerConsumer.ProduceThread;
 import com.example.james.studypro.ProducerConsumer.PublicRes;
 import com.example.james.studypro.R;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -30,10 +35,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onResume();
 
 
-        ReentrantLock lock = new ReentrantLock();
-        PublicRes publicRes = new PublicRes(lock);
-        new Thread(new ProduceThread(publicRes)).start();
-        new Thread(new ConsumeThread(publicRes)).start();
     }
 
     private void init(){
@@ -65,4 +66,50 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
+
+
+    public static void main(String[] args){
+        ReentrantLock lock = new ReentrantLock();
+        PublicRes publicRes = new PublicRes(lock);
+        ConsumeThread consumeThread0 = new ConsumeThread(publicRes);
+        consumeThread0.setName("consumeThread0");
+        consumeThread0.start();
+
+        ConsumeThread consumeThread1 = new ConsumeThread(publicRes);
+        consumeThread1.setName("consumeThread1");
+        consumeThread1.start();
+
+        ConsumeThread consumeThread2 = new ConsumeThread(publicRes);
+        consumeThread2.setName("consumeThread2");
+        consumeThread2.start();
+
+        ConsumeThread consumeThread3 = new ConsumeThread(publicRes);
+        consumeThread3.setName("consumeThread3");
+        consumeThread3.start();
+
+        ConsumeThread consumeThread4 = new ConsumeThread(publicRes);
+        consumeThread4.setName("consumeThread4");
+        consumeThread4.start();
+
+        ProduceThread produceThread0 = new ProduceThread(publicRes);
+        produceThread0.setName("produceThread0");
+        produceThread0.start();
+
+        ProduceThread produceThread1 = new ProduceThread(publicRes);
+        produceThread1.setName("produceThread1");
+        produceThread1.start();
+
+        ProduceThread produceThread2 = new ProduceThread(publicRes);
+        produceThread2.setName("produceThread2");
+        produceThread2.start();
+
+        ProduceThread produceThread3 = new ProduceThread(publicRes);
+        produceThread3.setName("produceThread3");
+        produceThread3.start();
+
+        ProduceThread produceThread4 = new ProduceThread(publicRes);
+        produceThread4.setName("produceThread4");
+        produceThread4.start();
+    }
+
 }

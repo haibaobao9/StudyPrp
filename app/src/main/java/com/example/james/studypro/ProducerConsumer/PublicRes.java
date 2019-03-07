@@ -6,75 +6,81 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class PublicRes {
-    private int num = 0;
     private ReentrantLock lock;
-    private Condition condition;
+    private Condition conditionA;
+    private Condition conditionB;
+    private boolean hasValue = false;
+
     public PublicRes(ReentrantLock lock){
         this.lock = lock;
-        condition = lock.newCondition();
+        conditionA = lock.newCondition();
+        conditionB = lock.newCondition();
     }
 
-    public void produce(){
-        try {
-            lock.lock();
-            while (num != 0){
-                condition.await();
-            }
-            condition.signal();
-            num ++;
-            Thread.sleep(1000);
-            Log.d("xxy","num = " + num);
-        }catch (InterruptedException e){
-            e.printStackTrace();
-        }finally {
-            lock.unlock();
-        }
-
-//        synchronized (this){
-//            try {
-//                while (num == 1){
-//                    wait();
-//                }
-//                num ++;
-//                notify();
-//                Log.d("xxy","num = " + num);
-//                Thread.sleep(1000);
-//            }catch (InterruptedException e){
-//                e.printStackTrace();
+//    public void produce(){
+//        try{
+//            lock.lock();
+//            while (hasValue){
+//                conditionB.await();
 //            }
+//            hasValue = true;
+//            conditionA.signalAll();
+//            System.out.println(Thread.currentThread().getName());
+//            Thread.sleep(1000);
+//        }catch (InterruptedException e){
+//            e.printStackTrace();
+//        }finally {
+//            lock.unlock();
 //        }
+//    }
+
+
+//    public void consume(){
+//        try {
+//            lock.lock();
+//            while (!hasValue){
+//                conditionA.await();
+//            }
+//            hasValue = false;
+//            conditionB.signalAll();
+//            System.out.println(Thread.currentThread().getName());
+//            Thread.sleep(1000);
+//        }catch (InterruptedException e){
+//            e.printStackTrace();
+//        }finally {
+//            lock.unlock();
+//        }
+//    }
+
+    public void produce(){
+        synchronized (this){
+            try {
+                while (hasValue){
+                    wait();
+                }
+                hasValue = true;
+                notifyAll();
+                Thread.sleep(1000);
+                System.out.println(Thread.currentThread().getName());
+            }catch (InterruptedException e){
+                e.printStackTrace();
+            }
+        }
     }
 
     public void consume(){
-        try {
-            lock.lock();
-            while (num == 0){
-                condition.await();
+        synchronized (this){
+            try {
+                while (!hasValue){
+                    wait();
+                }
+                hasValue = false;
+                notifyAll();
+                Thread.sleep(1000);
+                System.out.println(Thread.currentThread().getName());
+            }catch (InterruptedException e){
+                e.printStackTrace();
             }
-            condition.signal();
-            num --;
-            Thread.sleep(1000);
-            Log.d("xxy","num = " + num);
-        }catch (InterruptedException e){
-            e.printStackTrace();
-        }finally {
-            lock.unlock();
         }
-
-
-//        synchronized (this){
-//            try {
-//                while (num == 0){
-//                    wait();
-//                }
-//                num --;
-//                Log.d("xxy","num = " + num);
-//                notify();
-//                Thread.sleep(1000);
-//            }catch (InterruptedException e){
-//                e.printStackTrace();
-//            }
-//        }
     }
-
 }

@@ -1,6 +1,6 @@
 package com.example.james.studypro.ProducerConsumer;
 
-public class ConsumeThread implements Runnable{
+public class ConsumeThread extends Thread{
     private PublicRes publicRes;
     public ConsumeThread(PublicRes publicRes){
         this.publicRes = publicRes;
