@@ -12,6 +12,7 @@ import com.example.james.studypro.ProducerConsumer.PublicRes;
 import com.example.james.studypro.R;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -110,6 +111,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ProduceThread produceThread4 = new ProduceThread(publicRes);
         produceThread4.setName("produceThread4");
         produceThread4.start();
+
+        
     }
 
 }
