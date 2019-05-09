@@ -21,8 +21,6 @@ public class LeetCodeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leet_code);
-
-        searchInsert(new int[]{1, 3, 5, 6}, 5);
     }
 
     public int[] twoSum(int[] nums, int target) {
@@ -145,73 +143,69 @@ public class LeetCodeActivity extends AppCompatActivity {
     }
 
     public int searchInsert(int[] nums, int target) {
-        int left = 0, right = nums.length - 1;
-        while (left <= right) {
+        int left = 0 , right = nums.length - 1;
+        while (left <= right){
             int mid = (right - left) / 2 + left;
-            if (nums[mid] < target) {
-                left = mid + 1;
-            } else {
+            if (nums[mid] >= target){
                 right = mid - 1;
+            }else {
+                left = mid + 1;
             }
         }
         return left;
     }
 
     public int maxSubArray(int[] nums) {
-        int maxSum = Integer.MIN_VALUE;
+        int sum = Integer.MIN_VALUE;
         int temp = 0;
-        for (int i : nums) {
+        for (int i : nums){
             temp += i;
-            if (temp > maxSum) {
-                maxSum = temp;
-            }
-            if (temp < 0) {
-                temp = 0;
-            }
+            sum = temp > sum ? temp : sum;
+            temp = temp > 0 ? temp : 0;
         }
-        return maxSum;
+        return sum;
     }
 
     public int[] plusOne(int[] digits) {
-        for (int i = digits.length - 1; i >= 0; i--) {
-            if (digits[i] == 9) {
-                digits[i] = 0;
-            } else {
+        for (int i = digits.length - 1; i > -1; i--){
+            if (digits[i] != 9){
                 digits[i] += 1;
                 return digits;
+            }else {
+                digits[i] = 0;
             }
         }
-        int[] array = new int[digits.length + 1];
-        array[0] = 1;
-        return array;
+        int[] result = new int[digits.length + 1];
+        result[0] = 1;
+        return result;
     }
 
     public String addBinary(String a, String b) {
-        StringBuilder result = new StringBuilder();
-        int i = a.length() - 1;
-        int j = b.length() - 1;
-        int step = 0;
-        while (i > -1 || j > -1) {
-            int val1 = i > -1 ? a.charAt(i--) - '0' : 0;
-            int va12 = j > -1 ? b.charAt(j--) - '0' : 0;
-            result.insert(0, (val1 + va12 + step) % 2);
-            step = (va12 + val1 + step) / 2;
+        StringBuilder builder = new StringBuilder();
+        int m = a.length() - 1, n = b.length() - 1, step = 0;
+        while (m > -1 || n > -1){
+            int v1 = m > -1 ? a.charAt(m--) - '0' : 0;
+            int v2 = n > -1 ? b.charAt(n--) - '0' : 0;
+            builder.insert(0,(v1 + v2 + step) % 2);
+            step = (v1 + v2 + step) / 2;
         }
-        if (step == 1) {
-            result.insert(0, 1);
+        if (step == 1){
+            builder.insert(0, 1);
         }
-        return result.toString();
+        return builder.toString();
     }
 
     public int mySqrt(int x) {
-        if (x < 2) return x;
-        int ans = 0, left = 0, right = x;
-        while (left <= right) {
+        if (x < 2){
+            return x;
+        }
+        int left = 0, right = x,ans = 0;
+        while (left <= right){
             int mid = (right - left) / 2 + left;
-            if (x / mid >= mid) {
+            if (x / mid >= mid){
                 ans = mid;
                 left = mid + 1;
-            } else {
+            }else {
                 right = mid - 1;
             }
         }
@@ -219,9 +213,11 @@ public class LeetCodeActivity extends AppCompatActivity {
     }
 
     public int climbStairs(int n) {
-        if (n < 3) return n;
-        int pre = 2, prePre = 1, result = 0;
-        for (int i = 3; i <= n; i++) {
+        if (n < 3){
+            return n;
+        }
+        int pre = 2, prePre = 1,result = 0;
+        for (int i = 3; i <= n; i++){
             result = pre + prePre;
             prePre = pre;
             pre = result;
@@ -230,50 +226,49 @@ public class LeetCodeActivity extends AppCompatActivity {
     }
 
     public ListNode deleteDuplicates(ListNode head) {
-        if (head == null || head.next == null) {
+        if (head == null || head.next == null){
             return head;
         }
-        if (head.val == head.next.val) {
+        if (head.val == head.next.val){
             head.next = head.next.next;
             return deleteDuplicates(head);
-        } else {
+        }else {
             head.next = deleteDuplicates(head.next);
             return head;
         }
     }
 
-    public ListNode deleteDuplicatesByStack(ListNode head) {
-        if (head == null || head.next == null) {
+    public ListNode deleteDuplicatesByStack(ListNode head){
+        if (head == null || head.next == null){
             return head;
         }
         Stack<Integer> stack = new Stack<>();
-        while (head != null) {
-            if (!stack.contains(head.val)) {
+        while (head != null){
+            if (!stack.contains(head.val)){
                 stack.push(head.val);
             }
             head = head.next;
         }
-        ListNode cur = null, pre = null;
-        while (!stack.isEmpty()) {
-            cur = new ListNode(stack.pop());
-            cur.next = pre;
-            pre = cur;
+        ListNode p = null, q = null;
+        while (!stack.isEmpty()){
+            p = new ListNode(stack.pop());
+            p.next = q;
+            q = p;
         }
-        return cur;
+        return p;
     }
 
     public void merge(int[] nums1, int m, int[] nums2, int n) {
-        int length = m + n;
-        for (int i = length - 1; i > -1; i--) {
-            int v1 = m > 0 ? nums1[m - 1] : Integer.MIN_VALUE;
-            int v2 = n > 0 ? nums2[n - 1] : Integer.MIN_VALUE;
-            if (v1 > v2) {
-                nums1[i] = v1;
-                --m;
-            } else {
-                nums1[i] = v2;
-                --n;
-            }
+        for (int i = m + n - 1; i > -1; i--){
+             int v1 = m > 0 ? nums1[m - 1] : Integer.MIN_VALUE;
+             int v2 = n > 0 ? nums2[n - 1] : Integer.MIN_VALUE;
+             if (v1 > v2){
+                 nums1[i] = v1;
+                 m --;
+             }else {
+                 nums1[i] = v2;
+                 n --;
+             }
         }
     }
 
@@ -297,4 +292,44 @@ public class LeetCodeActivity extends AppCompatActivity {
         return isSameTree(p.left,q.left) && isSameTree(p.right,q.right);
     }
 
+    public boolean isSymmetric(TreeNode root) {
+        if (root == null){
+            return true;
+        }
+        return helper(root.left,root.right);
+    }
+
+    private boolean helper(TreeNode p, TreeNode q){
+        if (p == null && q ==null){
+            return true;
+        }
+        if (p == null || q == null || p.val != q.val){
+            return false;
+        }
+        return helper(p.left,q.right) && helper(p.right,q.left);
+    }
+
+    public int maxDepth(TreeNode root) {
+        if (root == null) return 0;
+        return Math.max(maxDepth(root.left),maxDepth(root.right)) + 1;
+    }
+
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (root == null) return result;
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+        while (queue.size() != 0){
+            int size = queue.size();
+            List<Integer> list = new ArrayList<>();
+            for (int i = 0; i < size; i++){
+                 TreeNode node = queue.poll();
+                 list.add(node.val);
+                 if (node.left != null) queue.add(node.left);
+                 if (node.right != null) queue.add(node.right);
+            }
+            result.add(0,list);
+        }
+        return result;
+    }
 }
