@@ -21,6 +21,11 @@ public class LeetCodeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_leet_code);
+
+        TreeNode root = new TreeNode(1);
+        TreeNode left = new TreeNode(2);
+        root.left = left;
+        Log.d("xxy",minDepth(root) + "");
     }
 
     public int[] twoSum(int[] nums, int target) {
@@ -272,7 +277,7 @@ public class LeetCodeActivity extends AppCompatActivity {
         }
     }
 
-    public class TreeNode {
+    public static class TreeNode {
         int val;
         TreeNode left;
         TreeNode right;
@@ -319,17 +324,129 @@ public class LeetCodeActivity extends AppCompatActivity {
         if (root == null) return result;
         Queue<TreeNode> queue = new LinkedList<>();
         queue.add(root);
-        while (queue.size() != 0){
+        while (!queue.isEmpty()){
             int size = queue.size();
             List<Integer> list = new ArrayList<>();
             for (int i = 0; i < size; i++){
-                 TreeNode node = queue.poll();
-                 list.add(node.val);
-                 if (node.left != null) queue.add(node.left);
-                 if (node.right != null) queue.add(node.right);
+                TreeNode node = queue.poll();
+                list.add(node.val);
+                if (node.left != null) queue.add(node.left);
+                if (node.right != null) queue.add(node.right);
             }
             result.add(0,list);
         }
         return result;
+    }
+
+    public TreeNode sortedArrayToBST(int[] nums) {
+        return helper(nums,0,nums.length - 1);
+    }
+
+    private TreeNode helper(int nums[],int left,int right){
+        if (left > right) return null;
+        int mid = (right - left) / 2 + left;
+        TreeNode node = new TreeNode(nums[mid]);
+        node.left = helper(nums,left,mid - 1);
+        node.right = helper(nums,mid + 1,right);
+        return node;
+    }
+
+    public boolean isBalanced(TreeNode root) {
+        return helper(root) != -1;
+    }
+
+    private int helper(TreeNode node){
+        if (node == null) return 0;
+        if (node.left == null && node.right == null) return 1;
+        int lh = helper(node.left);
+        int rh = helper(node.right);
+        if (lh == - 1 || rh == - 1 || Math.abs(lh - rh) > 1){
+            return -1;
+        }
+        return Math.max(lh,rh) + 1;
+    }
+
+    public int minDepth(TreeNode root) {
+        if(root == null) return 0;
+        int lh = minDepth(root.left);
+        int rh = minDepth(root.right);
+        return (rh == 0 || lh == 0) ? rh + lh + 1 : Math.min(rh,lh) + 1;
+    }
+
+    public boolean hasPathSum(TreeNode root, int sum) {
+        if (root == null) return false;
+        if (root.val == sum && root.left == null && root.right == null)
+            return true;
+        return hasPathSum(root.left,sum - root.val) || hasPathSum(root.right, sum - root.val);
+    }
+
+    public List<List<Integer>> generate(int numRows) {
+        List<List<Integer>> result = new ArrayList<>();
+        if (numRows < 1) return result;
+        List<Integer> fst = new ArrayList<>();
+        fst.add(1);
+        result.add(fst);
+        for (int i = 1; i < numRows; i ++){
+            List<Integer> list = new ArrayList<>();
+            list.add(1);
+            List<Integer> former = result.get(i - 1);
+            for (int j = 1; j < former.size(); j++){
+                list.add(former.get(j) + former.get(j - 1));
+            }
+            list.add(1);
+            result.add(list);
+        }
+        return result;
+    }
+
+    public List<Integer> getRow(int rowIndex) {
+        List<Integer> result = new ArrayList<>();
+        if (rowIndex < 0) return result;
+        for (int i = 0; i <= rowIndex; i++){
+            result.add(1);
+            for (int j = i - 1; j > 0;j --){
+                result.set(j,result.get(j) + result.get(j - 1));
+            }
+        }
+        return result;
+    }
+
+    public int maxProfit(int[] prices) {
+        int max = 0,temp = 0;
+        for (int i = 1; i < prices.length; i++){
+            temp += prices[i] - prices[i - 1];
+            max = Math.max(temp,max);
+            temp = Math.max(temp,0);
+        }
+        return max;
+    }
+
+    public int maxProfit2(int[] prices) {
+        int max = 0;
+        for (int i = 1; i < prices.length; i ++){
+            max += (prices[i] - prices[i - 1]) < 0 ? 0 : prices[i] - prices[i - 1];
+        }
+        return max;
+    }
+
+    public int singleNumber(int[] nums) {
+        int result = 0;
+        for (int n : nums){
+            result ^= n;
+        }
+        return result;
+    }
+
+    public boolean hasCycle(ListNode head) {
+        if (head == null) return false;
+        ListNode slow = head,fast = head;
+        while (fast != null && fast.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+            if (slow == fast){
+                return true;
+            }
+        }
+        return false;
     }
 }
