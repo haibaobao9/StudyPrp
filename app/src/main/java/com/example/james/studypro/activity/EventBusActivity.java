@@ -13,6 +13,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import java.util.List;
+
 public class EventBusActivity extends AppCompatActivity implements View.OnClickListener {
     private EditText et_common_register;
     private Button btn_publisher_activity;

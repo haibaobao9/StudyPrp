@@ -1,6 +1,6 @@
 package com.example.james.studypro.ProducerConsumer;
 
-public class ProduceThread extends Thread{
+public class ProduceThread extends Thread {
     private PublicRes publicRes;
 
     public ProduceThread(PublicRes publicRes){
@@ -9,6 +9,7 @@ public class ProduceThread extends Thread{
 
     @Override
     public void run() {
+        super.run();
         while (true){
             publicRes.produce();
         }

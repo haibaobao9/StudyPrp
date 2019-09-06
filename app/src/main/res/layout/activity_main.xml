@@ -29,4 +29,11 @@
         android:id="@+id/btn_event_bus"
         android:text="EventBus"/>
 
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/btn_Rxjava"
+        android:text="RxJava"/>
+
 </LinearLayout>
