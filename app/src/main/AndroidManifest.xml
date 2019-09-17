@@ -11,11 +11,6 @@
         android:theme="@style/AppTheme">
         <activity android:name=".activity.RxJavaActivity"></activity>
 
-        <service
-            android:name=".activity.BackService"
-            android:enabled="true"
-            android:exported="true" />
-
         <activity android:name=".activity.PublisherActivity" />
         <activity android:name=".activity.EventBusActivity" />
         <activity android:name=".activity.MainActivity">

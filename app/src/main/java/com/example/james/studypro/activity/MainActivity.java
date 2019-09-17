@@ -3,6 +3,7 @@ package com.example.james.studypro.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -27,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.TimeUnit;
+
 import java.util.concurrent.locks.ReentrantLock;
 
 import io.reactivex.Observable;
@@ -73,13 +74,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn_Rxjava = findViewById(R.id.btn_Rxjava);
         btn_Rxjava.setOnClickListener(this);
 
-        int memorySize = (int) Runtime.getRuntime().totalMemory() / 1024;
-        LruCache<String, Bitmap> lruCache = new LruCache<String, Bitmap>(memorySize / 8){
-            @Override
-            protected int sizeOf(String key, Bitmap value) {
-                return value.getRowBytes() * value.getHeight() / 1024;
-            }
-        };
     }
 
     @Override
@@ -106,20 +100,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
         }
     }
-
-    public static void main(String[] args){
-    }
-
-    interface Subject{
-        void request();
-    }
-
-    static class RealSubject implements Subject{
-        @Override
-        public void request() {
-            System.out.println("this is realSubject");
-        }
-    }
-
 
 }
