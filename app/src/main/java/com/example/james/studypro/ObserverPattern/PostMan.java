@@ -3,7 +3,7 @@ package com.example.james.studypro.ObserverPattern;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PostMan implements Observable{
+public class PostMan implements Obserable {
     private List<Observer> observers = new ArrayList<>();
 
     @Override
