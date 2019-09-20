@@ -57,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn_view.setOnClickListener(this);
         btn_event_bus = findViewById(R.id.btn_event_bus);
         btn_event_bus.setOnClickListener(this);
+
     }
 
     @Override
