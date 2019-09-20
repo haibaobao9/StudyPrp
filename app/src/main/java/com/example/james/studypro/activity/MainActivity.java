@@ -17,9 +17,6 @@ import com.example.james.studypro.ProducerConsumer.ConsumeThread;
 import com.example.james.studypro.ProducerConsumer.ProduceThread;
 import com.example.james.studypro.ProducerConsumer.PublicRes;
 import com.example.james.studypro.R;
-import com.example.james.studypro.Rxjava.GetRequest_Interface;
-import com.example.james.studypro.Rxjava.Translation;
-import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
@@ -31,22 +28,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import java.util.concurrent.locks.ReentrantLock;
 
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-import io.reactivex.Observer;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private Button btn_leet_code;
     private Button btn_view;
     private Button btn_event_bus;
-    private Button btn_Rxjava;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,9 +57,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn_view.setOnClickListener(this);
         btn_event_bus = findViewById(R.id.btn_event_bus);
         btn_event_bus.setOnClickListener(this);
-        btn_Rxjava = findViewById(R.id.btn_Rxjava);
-        btn_Rxjava.setOnClickListener(this);
-
     }
 
     @Override
@@ -90,10 +73,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.btn_event_bus:
                 intent = new Intent(MainActivity.this, EventBusActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.btn_Rxjava:
-                intent = new Intent(MainActivity.this, RxJavaActivity.class);
                 startActivity(intent);
                 break;
             default:

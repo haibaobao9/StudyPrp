@@ -24,43 +24,31 @@ public class TreeAlgorithm {
         node2.right = node6;
         node3.right = node7;
 
-        postOrder(node);
-    }
-
-    public static void preOrder(TreeNode node){
-        System.out.println(node.val);
-        if (node.left != null){
-            preOrder(node.left);
-        }
-        if (node.right != null){
-            preOrder(node.right);
+        List<Integer> list = bfs(node);
+        for (int i : list){
+            System.out.println(i);
         }
     }
 
-    public static void preOrder2(TreeNode node){
+    public static List<Integer> preOrder(TreeNode node){
+        List<Integer> result = new ArrayList<>();
+        if (node == null) return result;
         Stack<TreeNode> stack = new Stack<>();
         while (node != null || !stack.isEmpty()){
             if (node != null){
-                System.out.println(node.val);
+                result.add(node.val);
                 stack.push(node);
                 node = node.left;
             }else if (!stack.isEmpty()){
                 node = stack.pop().right;
             }
         }
+        return result;
     }
 
-    public static void inOrder(TreeNode node){
-        if (node.left != null){
-            inOrder(node.left);
-        }
-        System.out.println(node.val);
-        if (node.right != null){
-            inOrder(node.right);
-        }
-    }
-
-    public static void inOrder2(TreeNode node){
+    public static List<Integer> inOrder(TreeNode node){
+        List<Integer> result = new ArrayList<>();
+        if (node == null) return result;
         Stack<TreeNode> stack = new Stack<>();
         while (node != null || !stack.isEmpty()){
             if (node != null){
@@ -68,30 +56,23 @@ public class TreeAlgorithm {
                 node = node.left;
             }else if (!stack.isEmpty()){
                 TreeNode temp = stack.pop();
-                System.out.println(temp.val);
+                result.add(temp.val);
                 node = temp.right;
             }
         }
+        return result;
     }
 
-    public static void postOrder(TreeNode node){
-        if (node.left != null){
-            postOrder(node.left);
-        }
-        if (node.right != null){
-            postOrder(node.right);
-        }
-        System.out.println(node.val);
-    }
-
-    public static void postOrder2(TreeNode node){
-        Stack<TreeNode> stack = new Stack<>();
+    public static List<Integer> postOrder(TreeNode node){
+        List<Integer> result = new ArrayList<>();
+        if (node == null) return result;
         TreeNode cur = null, pre = null;
+        Stack<TreeNode> stack = new Stack<>();
         stack.push(node);
         while (!stack.isEmpty()){
             cur = stack.peek();
             if ((cur.left == null && cur.right == null) || (pre != null && (pre == cur.left || pre == cur.right))){
-                System.out.println(cur.val);
+                result.add(cur.val);
                 stack.pop();
                 pre = cur;
             }else {
@@ -103,42 +84,33 @@ public class TreeAlgorithm {
                 }
             }
         }
+        return result;
     }
 
-    public static List<Integer> dfs(TreeNode node){
-        List<Integer> list = new ArrayList<>();
-        if (node == null) return list;
+    public static List<Integer> dfs(TreeNode root){
+        List<Integer> result = new ArrayList<>();
+        if (root == null) return result;
         Stack<TreeNode> stack = new Stack<>();
-        stack.push(node);
+        stack.push(root);
         while (!stack.isEmpty()){
-            TreeNode temp = stack.pop();
-            list.add(temp.val);
-            if (temp.right != null){
-                stack.push(temp.right);
-            }
-            if (temp.left != null){
-                stack.push(temp.left);
-            }
+            TreeNode node = stack.pop();
+            result.add(node.val);
+            if (node.right != null) stack.push(node.right);
+            if (node.left != null) stack.push(node.left);
         }
-        return list;
+        return result;
     }
 
-    public static List<Integer> bfs(TreeNode node){
+    public static List<Integer> bfs(TreeNode root){
         List<Integer> list = new ArrayList<>();
-        if (node == null){
-            return list;
-        }
+        if (root == null) return list;
         Queue<TreeNode> queue = new LinkedList<>();
-        queue.add(node);
+        queue.add(root);
         while (!queue.isEmpty()){
-            TreeNode temp = queue.poll();
-            list.add(temp.val);
-            if (temp.left != null){
-                queue.add(temp.left);
-            }
-            if (temp.right != null){
-                queue.add(temp.right);
-            }
+            TreeNode node = queue.poll();
+            list.add(node.val);
+            if (node.left != null) queue.add(node.left);
+            if (node.right != null) queue.add(node.right);
         }
         return list;
     }
