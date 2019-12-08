@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
+        <activity android:name=".activity.KotlinActivity"></activity>
         <activity android:name=".activity.PublisherActivity" />
         <activity android:name=".activity.EventBusActivity" />
         <activity android:name=".activity.MainActivity">

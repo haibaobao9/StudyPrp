@@ -13,20 +13,31 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:id="@+id/btn_leet_code"
-        android:text="LeetCode"/>
+        android:text="LeetCode"
+        android:textAllCaps="false"/>
 
     <Button
         android:gravity="center"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:id="@+id/btn_view"
-        android:text="View"/>
+        android:text="View"
+        android:textAllCaps="false"/>
 
     <Button
         android:gravity="center"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:id="@+id/btn_event_bus"
-        android:text="EventBus"/>
+        android:text="EventBus"
+        android:textAllCaps="false"/>
 
+    <Button
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/btn_kotlin"
+        android:text="Kotlin"
+        android:textAllCaps="false"
+        />
 </LinearLayout>

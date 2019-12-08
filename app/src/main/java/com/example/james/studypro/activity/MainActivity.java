@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button btn_leet_code;
     private Button btn_view;
     private Button btn_event_bus;
+    private Button btn_kotlin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +58,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btn_view.setOnClickListener(this);
         btn_event_bus = findViewById(R.id.btn_event_bus);
         btn_event_bus.setOnClickListener(this);
-
+        btn_kotlin = findViewById(R.id.btn_kotlin);
+        btn_kotlin.setOnClickListener(this);
     }
 
     @Override
@@ -76,9 +78,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 intent = new Intent(MainActivity.this, EventBusActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.btn_kotlin:
+                intent = new Intent(MainActivity.this, KotlinActivity.class);
+                startActivity(intent);
+                break;
             default:
                 break;
         }
     }
 
+    public static void main(String[] args){
+        System.out.println(('1' - '9'));
+    }
 }

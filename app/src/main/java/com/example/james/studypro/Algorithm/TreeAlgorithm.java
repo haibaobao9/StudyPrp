@@ -64,15 +64,15 @@ public class TreeAlgorithm {
     }
 
     public static List<Integer> postOrder(TreeNode node){
-        List<Integer> result = new ArrayList<>();
-        if (node == null) return result;
-        TreeNode cur = null, pre = null;
+        List<Integer> list = new ArrayList<>();
+        if (node == null) return list;
         Stack<TreeNode> stack = new Stack<>();
+        TreeNode pre = null, cur = null;
         stack.push(node);
         while (!stack.isEmpty()){
             cur = stack.peek();
-            if ((cur.left == null && cur.right == null) || (pre != null && (pre == cur.left || pre == cur.right))){
-                result.add(cur.val);
+            if ((cur.left == null && cur.right == null) || ((pre != null) && (pre == cur.left || pre == cur.right))){
+                list.add(cur.val);
                 stack.pop();
                 pre = cur;
             }else {
@@ -84,21 +84,21 @@ public class TreeAlgorithm {
                 }
             }
         }
-        return result;
+        return list;
     }
 
     public static List<Integer> dfs(TreeNode root){
-        List<Integer> result = new ArrayList<>();
-        if (root == null) return result;
+        List<Integer> list = new ArrayList<>();
+        if (root == null) return list;
         Stack<TreeNode> stack = new Stack<>();
         stack.push(root);
         while (!stack.isEmpty()){
-            TreeNode node = stack.pop();
-            result.add(node.val);
-            if (node.right != null) stack.push(node.right);
-            if (node.left != null) stack.push(node.left);
+            TreeNode temp = stack.pop();
+            list.add(temp.val);
+            if (temp.right != null) stack.push(temp.right);
+            if (temp.left != null) stack.push(temp.left);
         }
-        return result;
+        return list;
     }
 
     public static List<Integer> bfs(TreeNode root){
@@ -107,10 +107,10 @@ public class TreeAlgorithm {
         Queue<TreeNode> queue = new LinkedList<>();
         queue.add(root);
         while (!queue.isEmpty()){
-            TreeNode node = queue.poll();
-            list.add(node.val);
-            if (node.left != null) queue.add(node.left);
-            if (node.right != null) queue.add(node.right);
+            TreeNode temp = queue.poll();
+            list.add(temp.val);
+            if (temp.left != null) queue.add(temp.left);
+            if (temp.right != null) queue.add(temp.right);
         }
         return list;
     }
